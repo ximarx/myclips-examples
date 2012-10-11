@@ -1,0 +1,438 @@
+# Copyright (c) 2008, Johan Lindberg [johan@pulp.se]
+# 
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+# 
+#   * Redistributions of source code must retain the above copyright notice,
+#     this list of conditions and the following disclaimer.
+#   * Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in the
+#     documentation and/or other materials provided with the distribution.
+#   * Neither the name of the <ORGANIZATION> nor the names of its
+#     contributors may be used to endorse or promote products derived from
+#     this software without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+# OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+import sys
+import xmlrpclib
+import thread
+from SimpleXMLRPCServer import SimpleXMLRPCServer
+
+
+#import clips
+#from myclips import Network as MyClipsEngine
+#from myclips.shell.Interpreter import Interpreter as MyClipsInterpreter
+#from myclips.listeners.EventsManagerListener import EventsManagerListener
+
+import wx
+import wx.xrc
+
+def aStream():
+    
+    oFile = sys.stdout
+    iFile = sys.stdin
+    
+    fakeStdOut = SimpleXMLRPCServer(("localhost", 0), allow_none=True, logRequests=False)    
+    fakeStdOut.register_function(lambda t: "pong", 'Stream.ping')
+    fakeStdOut.register_function(lambda t,s: oFile.write(s) or True, 'Stream.write')
+    fakeStdOut.register_function(lambda *args: oFile.write("RPC: CLOSE!") or True, 'Stream.close')
+    fakeStdOut.register_function(lambda t: oFile.write("RPC Input: ") or iFile.readline(), 'Stream.readline')
+    
+    thread.start_new_thread(fakeStdOut.serve_forever, ())
+    
+    #return fakeStdOut.server_address
+    return "http://%s:%s"%tuple([str(x) for x in fakeStdOut.server_address]) 
+
+
+def get_server():
+    return xmlrpclib.Server('http://localhost:8081', allow_none=True, verbose=False)
+
+def get_token(server):
+    return server.Sessions.new()
+
+def linkStream(s, aToken):
+    
+    aAddress = aStream()
+    s.ClientIO.register(aToken, "t", aAddress, 324)
+    s.ClientIO.register(aToken, "stdout", aAddress, 324)
+    s.ClientIO.register(aToken, "stdin", aAddress, 324)
+    s.ClientIO.register(aToken, "wtrace", aAddress, 324)
+    
+
+
+class SudokuSolvedCells(object):
+    def __init__(self):
+        self.grid = {}
+        self.resetGrid()
+        
+    def install(self, server, aToken):
+        
+        remoteListener = SimpleXMLRPCServer(("localhost", 0), allow_none=True, logRequests=False)    
+        remoteListener.register_function(lambda t: "pong", 'Listener.ping')    
+        remoteListener.register_function(lambda *args: True, 'Listener.close')
+        remoteListener.register_function(lambda t,en,*args:  self.onSolvedCell(args[0][0]['properties']['content'], args[0][1]['properties']['content'], args[0][2]['properties']['content']) or True, 'Listener.notify')
+        
+        thread.start_new_thread(remoteListener.serve_forever, ())
+        
+        aAddress = "http://%s:%s"%tuple([str(x) for x in remoteListener.server_address])
+        
+        server.ClientEvents.register(aToken, "aListener%s"%aAddress, aAddress, 213, ['sudoku_solved_cell'])
+        
+        
+    def onSolvedCell(self, row, col, value, *args, **kargs):
+        #print "\nOn-Solved-Cell: %s, %s, %s"%(repr(row), repr(col), repr(value))
+        self.grid[int(row)][int(col)] = int(value)
+    
+    def getValueAtCell(self, row, col):
+        return self.grid[row][col]
+    
+    def resetGrid(self):
+        self.grid = {}
+        for i in range(1,10):
+            for j in range(1,10):
+                if not self.grid.has_key(i):
+                    self.grid[i] = {}
+                self.grid[i][j] = 0
+
+
+class SudokuTecniqueUsed(object):
+    def __init__(self):
+        #EventsManagerListener.__init__(self, {'sudoku_tecnique_used': self.onRulesUsed})
+        self.rules = []
+        
+    def install(self, server, aToken):
+        
+        remoteListener = SimpleXMLRPCServer(("localhost", 0), allow_none=True, logRequests=False)    
+        remoteListener.register_function(lambda t: "pong", 'Listener.ping')    
+        remoteListener.register_function(lambda *args: True, 'Listener.close')
+        remoteListener.register_function(lambda t,en,*args: self.onRulesUsed(args[0][0]['properties']['content']) or True, 'Listener.notify')
+        
+        thread.start_new_thread(remoteListener.serve_forever, ())
+        
+        aAddress = "http://%s:%s"%tuple([str(x) for x in remoteListener.server_address])
+        
+        server.ClientEvents.register(aToken, "aListener%s"%aAddress, aAddress, 213, ['sudoku_tecnique_used'])        
+        
+    def onRulesUsed(self, name, *args, **kargs):
+        #print "\nOn-Rules-Used: %s, "%repr(name)
+        self.rules.append(name)
+    
+    def resetRules(self):
+        self.rules = []
+
+class SudokuDemoXMLRPC(wx.App):
+    def OnInit(self):
+        # Load the Sudoku solving programs
+        #clips.Load("sudoku.clp")
+        #clips.Load("solve.clp")
+        
+        self.server = get_server()
+        self.token = get_token(self.server)
+        
+        linkStream(self.server, self.token)
+        
+        #self.engine = MyClipsEngine()
+        #self.interpreter = MyClipsInterpreter(self.engine)
+        self.solvedCells = SudokuSolvedCells()
+        self.solvedCells.install(self.server, self.token)
+
+        self.rulesUsed = SudokuTecniqueUsed()
+        self.rulesUsed.install(self.server, self.token)
+
+        def remoteDo(command):
+            self.server.RemoteShell.do(self.token,command)
+            
+        self.remoteInterpreter = remoteDo
+        
+        self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/sudoku.clp")')
+        self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/solve.clp")')
+        self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/output-frills.clp")')
+        #self.interpreter.evaluate('(watch rules)')
+        
+        
+        # Load the GUI from SudokuDemo.xrc
+        resource = wx.xrc.XmlResource('SudokuDemo.xrc')
+        self.frame = resource.LoadFrame(None, 'SudokuDemoFrame')
+
+        self.frame.SetTitle('Sudoku Demo (XML-RPC version)')
+        
+        
+        # Store references to widgets that are being used at run-time.
+        self.openfile = wx.xrc.XRCCTRL(self.frame, 'OpenFile')
+        self.clear = wx.xrc.XRCCTRL(self.frame, 'Clear')
+        self.reset = wx.xrc.XRCCTRL(self.frame, 'Reset')
+        self.solve = wx.xrc.XRCCTRL(self.frame, 'Solve')
+        self.techniques = wx.xrc.XRCCTRL(self.frame, 'Techniques')
+        
+        # Bind button events to handler functions
+        self.openfile.Bind(wx.EVT_BUTTON, self.on_openfile)
+        self.clear.Bind(wx.EVT_BUTTON, self.on_clear)
+        self.reset.Bind(wx.EVT_BUTTON, self.on_reset)
+        self.solve.Bind(wx.EVT_BUTTON, self.on_solve)
+        self.techniques.Bind(wx.EVT_BUTTON, self.on_techniques)
+        
+        # Set max length in each of the wx.TextCtrls to 1. This can,
+        # sadly, NOT be done using XRCEd.
+        for g in range(1,10):
+            for c in range(1,10):
+                cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (g, c))
+                cell.SetMaxLength(1)
+                
+        self.solved = False
+        self.resetvalues = {}
+        
+        # Bind the close event to the exit function and show the GUI
+        self.frame.Bind(wx.EVT_CLOSE, self.exit)
+        self.frame.Show(True)
+        
+        return True
+        
+    def on_openfile(self, event):
+        """
+        Loads a Sudoku puzzle from disk.
+        """
+        
+        # Show a File Open Dialog
+        dlg = wx.FileDialog(self.frame,
+                            message = "Open a Sudoku puzzle",
+                            style = wx.OPEN)
+        if dlg.ShowModal() == wx.ID_OK:
+            self.solved = False
+            
+            self.solve.Enable(True)
+            self.techniques.Enable(False)
+            
+            path = dlg.GetPath()
+            
+            puzzle = open(path)
+            positions = {   1 : [11, 12, 13, 21, 22, 23, 31, 32, 33],
+                            2 : [14, 15, 16, 24, 25, 26, 34, 35, 36],
+                            3 : [17, 18, 19, 27, 28, 29, 37, 38, 39],
+                            
+                            4 : [41, 42, 43, 51, 52, 53, 61, 62, 63],
+                            5 : [44, 45, 46, 54, 55, 56, 64, 65, 66],
+                            6 : [47, 48, 49, 57, 58, 59, 67, 68, 69],
+                            
+                            7 : [71, 72, 73, 81, 82, 83, 91, 92, 93],
+                            8 : [74, 75, 76, 84, 85, 86, 94, 95, 96],
+                            9 : [77, 78, 79, 87, 88, 89, 97, 98, 99]    }
+                            
+            lines = 0
+            for line in puzzle.readlines():
+                lines += 1
+                line = line.strip()
+                if len(line) != 9:
+                    raise Exception("Malformed puzzle!")
+                    
+                cells = positions[lines]
+                for id, value in zip(cells, line):
+                    cell = wx.xrc.XRCCTRL(self.frame, '%d' % (id))
+                    if value in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+                        cell.SetValue(str(value))
+                    else:
+                        cell.SetValue("")
+                    cell.SetSize((20,20))
+                    
+            if lines != 9:
+                raise Exception("Malformed puzzle!")
+                
+            puzzle.close()
+            
+    def on_clear(self, event):
+        """
+        Clears the Sudoku grid.
+        """
+        
+        self.solved = False
+        
+        self.solve.Enable(True)
+        self.techniques.Enable(False)
+        
+        for g in range(1,10):
+            for c in range(1,10):
+                cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (g, c))
+                cell.SetValue("")
+                cell.SetSize((20,20))
+                
+    def on_reset(self, event):
+        """
+        Resets the Sudoku grid to the last puzzle solved.
+        """
+        
+        self.solved = False
+        
+        self.solve.Enable(True)
+        self.techniques.Enable(False)
+        
+        for g in range(1,10):
+            for r in range(3):
+                for c in range(3):
+                    cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (g, (r* 3)+ c+ 1))
+                    try:
+                        cell.SetValue(self.resetvalues[(g,r,c)])
+                    except:
+                        cell.SetValue("")
+                    cell.SetSize((20,20))
+                    
+    def on_solve(self, event):
+        """
+        Solves the Sudoku puzzle and updates the grid with the solution.
+        """
+        
+        #clips.Reset()
+        #clips.Assert("(phase expand-any)")
+        #clips.Assert("(size 3)")
+        #self.engine.reset()
+        #self.interpreter.evaluate('(assert (phase expand-any))')
+        #self.interpreter.evaluate('(assert (size 3))')
+        
+        # Remember the initial starting values
+        # of the puzzle for the reset command.
+        
+        grid_rule = '''
+(defrule grid-values
+   ?f <- (phase grid-values)
+   =>
+   (retract ?f)
+   (assert (phase expand-any))
+   (assert (size 3))
+'''        
+        
+        self.resetvalues = {}
+        
+        for i in range(9):
+            rowgroup = i / 3
+            colgroup = i % 3
+            for r in range(3):
+                for c in range(3):
+                    cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (i+ 1, (r* 3)+ c+ 1))
+                    self.resetvalues[(i+ 1,r,c)] = cell.GetValue()
+                    
+                    assertStr = "(possible (row %d) (column %d) (group %d) (id %d) " % \
+                                ((r + (rowgroup * 3) + 1),
+                                 (c + (colgroup * 3) + 1),
+                                 (i + 1), ((i * 9) + (r * 3) + c + 1))
+                                 
+                    if self.resetvalues[(i+ 1,r,c)] == "":
+                        assertStr = assertStr + "(value any))"
+                    else:
+                        assertStr = assertStr + "(value " + self.resetvalues[(i+ 1, r, c)] + "))"
+                        
+                    #clips.Assert(str(assertStr))
+                    #self.interpreter.evaluate('(assert %s)'%str(assertStr))
+                    grid_rule += "(assert %s)\n"%str(assertStr)
+                    
+        grid_rule += ")"
+        
+        #print grid_rule
+        
+        self.remoteInterpreter(grid_rule)
+        self.server.Engine.reset(self.token)
+                    
+        self.solved = True
+        self.reset.Enable(True)
+        self.solve.Enable(False)
+        self.techniques.Enable(True)
+        
+        # Solve the puzzle
+        #clips.Run()
+        self.server.Engine.run(self.token)
+        
+        #ff = self.engine.facts
+        #for f in ff:
+        #    print f
+        
+        #print self.solvedCells.grid
+
+        for i in range(9):
+            rowgroup = i / 3
+            colgroup = i % 3
+            for r in range(3):
+                for c in range(3):
+                    cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (i+ 1, (r* 3)+ c+ 1))
+                    if cell.GetValue() == "":
+                        # Any cells that have not been assigned a value
+                        # are given a '?' for their content
+                        cell.SetValue("?")
+                                   
+                        value = self.solvedCells.getValueAtCell(r + (rowgroup * 3) + 1, c + (colgroup * 3) + 1)
+                                   
+                        cell.SetValue(str(value))
+
+        
+        # Retrieve the solution from CLIPS.
+#        for i in range(9):
+#            rowgroup = i / 3
+#            colgroup = i % 3
+#            for r in range(3):
+#                for c in range(3):
+#                    cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (i+ 1, (r* 3)+ c+ 1))
+#                    if cell.GetValue() == "":
+#                        # Any cells that have not been assigned a value
+#                        # are given a '?' for their content
+#                        cell.SetValue("?")
+#                        
+#                        evalStr = "(find-all-facts ((?f possible)) (and (eq ?f:row %d) (eq ?f:column %d)))" % \
+#                                  ((r + (rowgroup * 3) + 1),
+#                                   (c + (colgroup * 3) + 1))
+#                                   
+#                        pv = clips.Eval(evalStr)
+#                        if len(pv) == 1:
+#                            fv = pv[0]
+#                            cell.SetValue(str(fv.Slots["value"]))
+                            
+                            
+    def on_techniques(self, event):
+        """
+        Opens a wx.Dialog that displays which solution techniques was
+        used to solve the current puzzle.
+        """
+        
+#        evalStr = "(find-all-facts ((?f technique)) TRUE)";
+#        techniques = clips.Eval(evalStr)
+#        
+#        message = ""
+#        tNum = len(techniques)
+#        for i in range(1, tNum+ 1):
+#            evalStr = "(find-fact ((?f technique-employed)) (eq ?f:priority %d))" % (i)
+#            pv = clips.Eval(evalStr)
+#            
+#            if len(pv) > 0:
+#                fv = pv[0]
+#                
+#                message = "%s\n%s. %s" % (message, fv.Slots["priority"], fv.Slots["reason"])
+
+        #print self.rulesUsed.rules
+
+        message = "\n".join(self.rulesUsed.rules)
+                
+        dlg = wx.MessageDialog(self.frame, message, "Solution Techniques",
+                               wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
+        
+    def exit(self, event):
+        """
+        Destroys the GUI and exits the application.
+        """
+        
+        self.frame.Destroy()
+        sys.exit(0)
+        
+if __name__ == '__main__':
+    app= SudokuDemoXMLRPC(0)
+    app.MainLoop()
