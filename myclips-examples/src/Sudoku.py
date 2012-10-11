@@ -32,9 +32,43 @@ import sys
 #import clips
 from myclips import Network as MyClipsEngine
 from myclips.shell.Interpreter import Interpreter as MyClipsInterpreter
+from myclips.listeners.EventsManagerListener import EventsManagerListener
 
 import wx
 import wx.xrc
+
+class SudokuSolvedCells(EventsManagerListener):
+    def __init__(self):
+        EventsManagerListener.__init__(self, {'sudoku_solved_cell': self.onSolvedCell})
+        self.grid = {}
+        self.resetGrid()
+        
+    def onSolvedCell(self, row, col, value, *args, **kargs):
+        #print "On-Solved-Cell: %s, %s, %s"%(repr(row), repr(col), repr(value))
+        self.grid[row.evaluate()][col.evaluate()] = value.evaluate()
+    
+    def getValueAtCell(self, row, col):
+        return self.grid[row][col]
+    
+    def resetGrid(self):
+        self.grid = {}
+        for i in range(1,10):
+            for j in range(1,10):
+                if not self.grid.has_key(i):
+                    self.grid[i] = {}
+                self.grid[i][j] = 0
+
+
+class SudokuTecniqueUsed(EventsManagerListener):
+    def __init__(self):
+        EventsManagerListener.__init__(self, {'sudoku_tecnique_used': self.onRulesUsed})
+        self.rules = []
+        
+    def onRulesUsed(self, name, *args, **kargs):
+        self.rules.append(name.evaluate())
+    
+    def resetRules(self):
+        self.rules = []
 
 class SudokuDemo(wx.App):
     def OnInit(self):
@@ -44,11 +78,17 @@ class SudokuDemo(wx.App):
         
         self.engine = MyClipsEngine()
         self.interpreter = MyClipsInterpreter(self.engine)
+        self.solvedCells = SudokuSolvedCells()
+        self.solvedCells.install(self.engine.eventsManager)
+
+        self.rulesUsed = SudokuTecniqueUsed()
+        self.rulesUsed.install(self.engine.eventsManager)
+
         
         self.interpreter.evaluate('(load "../res/sudoku/sudoku.clp")')
         self.interpreter.evaluate('(load "../res/sudoku/solve.clp")')
         self.interpreter.evaluate('(load "../res/sudoku/output-frills.clp")')
-        self.interpreter.evaluate('(watch rules)')
+        #self.interpreter.evaluate('(watch rules)')
         
         
         # Load the GUI from SudokuDemo.xrc
@@ -180,12 +220,21 @@ class SudokuDemo(wx.App):
         #clips.Reset()
         #clips.Assert("(phase expand-any)")
         #clips.Assert("(size 3)")
-        self.engine.reset()
-        self.interpreter.evaluate('(assert (phase expand-any))')
-        self.interpreter.evaluate('(assert (size 3))')
+        #self.engine.reset()
+        #self.interpreter.evaluate('(assert (phase expand-any))')
+        #self.interpreter.evaluate('(assert (size 3))')
         
         # Remember the initial starting values
         # of the puzzle for the reset command.
+        
+        grid_rule = '''
+(defrule grid-values
+   ?f <- (phase grid-values)
+   =>
+   (retract ?f)
+   (assert (phase expand-any))
+   (assert (size 3))
+'''        
         
         self.resetvalues = {}
         
@@ -208,7 +257,15 @@ class SudokuDemo(wx.App):
                         assertStr = assertStr + "(value " + self.resetvalues[(i+ 1, r, c)] + "))"
                         
                     #clips.Assert(str(assertStr))
-                    self.interpreter.evaluate('(assert %s)'%str(assertStr))
+                    #self.interpreter.evaluate('(assert %s)'%str(assertStr))
+                    grid_rule += "(assert %s)\n"%str(assertStr)
+                    
+        grid_rule += ")"
+        
+        #print grid_rule
+        
+        self.interpreter.evaluate(grid_rule)
+        self.engine.reset()
                     
         self.solved = True
         self.reset.Enable(True)
@@ -219,9 +276,27 @@ class SudokuDemo(wx.App):
         #clips.Run()
         self.engine.run()
         
-        ff = self.engine.facts
-        for f in ff:
-            print f
+        #ff = self.engine.facts
+        #for f in ff:
+        #    print f
+        
+        #print self.solvedCells.grid
+
+        for i in range(9):
+            rowgroup = i / 3
+            colgroup = i % 3
+            for r in range(3):
+                for c in range(3):
+                    cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (i+ 1, (r* 3)+ c+ 1))
+                    if cell.GetValue() == "":
+                        # Any cells that have not been assigned a value
+                        # are given a '?' for their content
+                        cell.SetValue("?")
+                                   
+                        value = self.solvedCells.getValueAtCell(r + (rowgroup * 3) + 1, c + (colgroup * 3) + 1)
+                                   
+                        cell.SetValue(str(value))
+
         
         # Retrieve the solution from CLIPS.
 #        for i in range(9):
@@ -265,7 +340,9 @@ class SudokuDemo(wx.App):
 #                
 #                message = "%s\n%s. %s" % (message, fv.Slots["priority"], fv.Slots["reason"])
 
-        message = "Bho"
+        #print self.rulesUsed.rules
+
+        message = "\n".join(self.rulesUsed.rules)
                 
         dlg = wx.MessageDialog(self.frame, message, "Solution Techniques",
                                wx.OK | wx.ICON_INFORMATION)

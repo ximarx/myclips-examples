@@ -60,7 +60,9 @@
          else
          (printout ?*output* " " ?v))
       else
-      (printout ?*output* ?v)))
+      (printout ?*output* ?v))
+      
+	(trigger-event sudoku_solved_cell ?r ?c ?v))
    
 ;;; ******************************
 ;;; print-position-value-not-found
@@ -231,6 +233,8 @@
    =>
    
    (printout ?*output* "   " ?reason crlf)
+   
+   (trigger-event sudoku_tecnique_used ?reason)
    
    (retract ?f))
     
