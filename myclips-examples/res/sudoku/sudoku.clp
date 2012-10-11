@@ -65,8 +65,6 @@
 
    =>
 
-   (assert (phase grid-values))
-
    (assert (size-value (size 1) (value 1)))
    (assert (size-value (size 2) (value 2)))
    (assert (size-value (size 2) (value 3)))

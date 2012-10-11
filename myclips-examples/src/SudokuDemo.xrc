@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="cp1252"?>
+<resource>
+  <object class="wxFrame" name="SudokuDemoFrame">
+    <title>Sudoku Demo</title>
+    <object class="wxBoxSizer">
+      <orient>wxVERTICAL</orient>
+      <object class="sizeritem">
+        <object class="wxPanel" name="MainPanel">
+          <object class="wxGridBagSizer">
+            <object class="sizeritem">
+              <object class="wxPanel" name="Spacer1">
+                <object class="wxBoxSizer">
+                  <orient>wxVERTICAL</orient>
+                  <object class="sizeritem">
+                    <object class="wxPanel" name="BlackSpacer">
+                      <object class="wxBoxSizer">
+                        <orient>wxVERTICAL</orient>
+                        <object class="sizeritem">
+                          <object class="wxPanel" name="Spacer2">
+                            <object class="wxBoxSizer">
+                              <orient>wxVERTICAL</orient>
+                              <object class="sizeritem">
+                                <object class="wxPanel" name="Grids">
+                                  <object class="wxGridSizer">
+                                    <cols>3</cols>
+                                    <rows>3</rows>
+                                    <vgap>2</vgap>
+                                    <hgap>2</hgap>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="1">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="11">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="12">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="13">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="14">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="15">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="16">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="17">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="18">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="19">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="2">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="21">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="22">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="23">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="24">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="25">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="26">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="27">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="28">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="29">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="3">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="31">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="32">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="33">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="34">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="35">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="36">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="37">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="38">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="39">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="4">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="41">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="42">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="43">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="44">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="45">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="46">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="47">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="48">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="49">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="5">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="51">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="52">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="53">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="54">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="55">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="56">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="57">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="58">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="59">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="6">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="61">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="62">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="63">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="64">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="65">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="66">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="67">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="68">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="69">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="7">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="71">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="72">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="73">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="74">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="75">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="76">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="77">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="78">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="79">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="8">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="81">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="82">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="83">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="84">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="85">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="86">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="87">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="88">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="89">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                    <object class="sizeritem">
+                                      <object class="wxPanel" name="">
+                                        <object class="wxGridSizer">
+                                          <cols>3</cols>
+                                          <rows>3</rows>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="91">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="92">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="93">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="94">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="95">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="96">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="97">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="98">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <object class="sizeritem">
+                                            <object class="wxTextCtrl" name="99">
+                                              <value> </value>
+                                              <size>20,20</size>
+                                              <style>wxTE_CENTRE|wxNO_BORDER</style>
+                                              <bg>#FFFFFF</bg>
+                                            </object>
+                                          </object>
+                                          <vgap>1</vgap>
+                                          <hgap>1</hgap>
+                                        </object>
+                                        <bg>#000000</bg>
+                                      </object>
+                                    </object>
+                                  </object>
+                                  <bg>#000000</bg>
+                                </object>
+                                <flag>wxALL</flag>
+                                <border>1</border>
+                              </object>
+                            </object>
+                          </object>
+                          <flag>wxALL</flag>
+                          <border>1</border>
+                        </object>
+                      </object>
+                      <bg>#000000</bg>
+                    </object>
+                    <flag>wxALL</flag>
+                    <border>1</border>
+                  </object>
+                </object>
+              </object>
+              <flag>wxALL</flag>
+              <border>2</border>
+              <cellpos>1,1</cellpos>
+            </object>
+            <object class="sizeritem">
+              <object class="wxPanel" name="Buttons">
+                <object class="wxBoxSizer">
+                  <orient>wxVERTICAL</orient>
+                  <object class="sizeritem">
+                    <object class="wxButton" name="OpenFile">
+                      <label>Open File</label>
+                    </object>
+                    <flag>wxBOTTOM</flag>
+                    <border>5</border>
+                  </object>
+                  <object class="sizeritem">
+                    <object class="wxButton" name="Clear">
+                      <label>Clear</label>
+                    </object>
+                  </object>
+                  <object class="sizeritem">
+                    <object class="wxButton" name="Reset">
+                      <label>Reset</label>
+                    </object>
+                  </object>
+                  <object class="sizeritem">
+                    <object class="wxButton" name="Solve">
+                      <label>Solve</label>
+                    </object>
+                  </object>
+                  <object class="sizeritem">
+                    <object class="wxButton" name="Techniques">
+                      <label>Techniques</label>
+                    </object>
+                  </object>
+                </object>
+              </object>
+              <flag>wxALL|wxALIGN_CENTRE</flag>
+              <border>2</border>
+              <cellpos>1,2</cellpos>
+            </object>
+            <object class="sizeritem">
+              <object class="wxStaticText" name="Instructions">
+                <label>Select cell and enter digit 1-9 or press backspace/delete.</label>
+              </object>
+              <flag>wxALL|wxALIGN_CENTRE_VERTICAL|wxALIGN_CENTRE_HORIZONTAL</flag>
+              <border>5</border>
+              <cellpos>2,1</cellpos>
+              <cellspan>2</cellspan>
+            </object>
+            <vgap>0</vgap>
+            <hgap>0</hgap>
+          </object>
+        </object>
+        <option>1</option>
+        <flag>wxEXPAND|wxGROW</flag>
+      </object>
+    </object>
+  </object>
+</resource>

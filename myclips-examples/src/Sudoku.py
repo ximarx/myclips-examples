@@ -1,4 +1,3 @@
-
 # Copyright (c) 2008, Johan Lindberg [johan@pulp.se]
 # 
 # All rights reserved.
@@ -48,6 +47,8 @@ class SudokuDemo(wx.App):
         
         self.interpreter.evaluate('(load "../res/sudoku/sudoku.clp")')
         self.interpreter.evaluate('(load "../res/sudoku/solve.clp")')
+        self.interpreter.evaluate('(load "../res/sudoku/output-frills.clp")')
+        self.interpreter.evaluate('(watch rules)')
         
         
         # Load the GUI from SudokuDemo.xrc
@@ -180,8 +181,8 @@ class SudokuDemo(wx.App):
         #clips.Assert("(phase expand-any)")
         #clips.Assert("(size 3)")
         self.engine.reset()
-        self.interpreter.evaluate('(assert (phase expand-any)')
-        self.interpreter.evaluate('(assert (size 3)')
+        self.interpreter.evaluate('(assert (phase expand-any))')
+        self.interpreter.evaluate('(assert (size 3))')
         
         # Remember the initial starting values
         # of the puzzle for the reset command.
@@ -218,26 +219,30 @@ class SudokuDemo(wx.App):
         #clips.Run()
         self.engine.run()
         
+        ff = self.engine.facts
+        for f in ff:
+            print f
+        
         # Retrieve the solution from CLIPS.
-        for i in range(9):
-            rowgroup = i / 3
-            colgroup = i % 3
-            for r in range(3):
-                for c in range(3):
-                    cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (i+ 1, (r* 3)+ c+ 1))
-                    if cell.GetValue() == "":
-                        # Any cells that have not been assigned a value
-                        # are given a '?' for their content
-                        cell.SetValue("?")
-                        
-                        evalStr = "(find-all-facts ((?f possible)) (and (eq ?f:row %d) (eq ?f:column %d)))" % \
-                                  ((r + (rowgroup * 3) + 1),
-                                   (c + (colgroup * 3) + 1))
-                                   
-                        pv = clips.Eval(evalStr)
-                        if len(pv) == 1:
-                            fv = pv[0]
-                            cell.SetValue(str(fv.Slots["value"]))
+#        for i in range(9):
+#            rowgroup = i / 3
+#            colgroup = i % 3
+#            for r in range(3):
+#                for c in range(3):
+#                    cell = wx.xrc.XRCCTRL(self.frame, '%d%d' % (i+ 1, (r* 3)+ c+ 1))
+#                    if cell.GetValue() == "":
+#                        # Any cells that have not been assigned a value
+#                        # are given a '?' for their content
+#                        cell.SetValue("?")
+#                        
+#                        evalStr = "(find-all-facts ((?f possible)) (and (eq ?f:row %d) (eq ?f:column %d)))" % \
+#                                  ((r + (rowgroup * 3) + 1),
+#                                   (c + (colgroup * 3) + 1))
+#                                   
+#                        pv = clips.Eval(evalStr)
+#                        if len(pv) == 1:
+#                            fv = pv[0]
+#                            cell.SetValue(str(fv.Slots["value"]))
                             
                             
     def on_techniques(self, event):
@@ -246,19 +251,21 @@ class SudokuDemo(wx.App):
         used to solve the current puzzle.
         """
         
-        evalStr = "(find-all-facts ((?f technique)) TRUE)";
-        techniques = clips.Eval(evalStr)
-        
-        message = ""
-        tNum = len(techniques)
-        for i in range(1, tNum+ 1):
-            evalStr = "(find-fact ((?f technique-employed)) (eq ?f:priority %d))" % (i)
-            pv = clips.Eval(evalStr)
-            
-            if len(pv) > 0:
-                fv = pv[0]
-                
-                message = "%s\n%s. %s" % (message, fv.Slots["priority"], fv.Slots["reason"])
+#        evalStr = "(find-all-facts ((?f technique)) TRUE)";
+#        techniques = clips.Eval(evalStr)
+#        
+#        message = ""
+#        tNum = len(techniques)
+#        for i in range(1, tNum+ 1):
+#            evalStr = "(find-fact ((?f technique-employed)) (eq ?f:priority %d))" % (i)
+#            pv = clips.Eval(evalStr)
+#            
+#            if len(pv) > 0:
+#                fv = pv[0]
+#                
+#                message = "%s\n%s. %s" % (message, fv.Slots["priority"], fv.Slots["reason"])
+
+        message = "Bho"
                 
         dlg = wx.MessageDialog(self.frame, message, "Solution Techniques",
                                wx.OK | wx.ICON_INFORMATION)
