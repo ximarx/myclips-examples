@@ -34,9 +34,6 @@ from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 
 #import clips
-#from myclips import Network as MyClipsEngine
-#from myclips.shell.Interpreter import Interpreter as MyClipsInterpreter
-#from myclips.listeners.EventsManagerListener import EventsManagerListener
 
 import wx
 import wx.xrc
@@ -54,7 +51,6 @@ def aStream():
     
     thread.start_new_thread(fakeStdOut.serve_forever, ())
     
-    #return fakeStdOut.server_address
     return "http://%s:%s"%tuple([str(x) for x in fakeStdOut.server_address]) 
 
 
@@ -111,7 +107,6 @@ class SudokuSolvedCells(object):
 
 class SudokuTecniqueUsed(object):
     def __init__(self):
-        #EventsManagerListener.__init__(self, {'sudoku_tecnique_used': self.onRulesUsed})
         self.rules = []
         
     def install(self, server, aToken):
@@ -128,7 +123,6 @@ class SudokuTecniqueUsed(object):
         server.ClientEvents.register(aToken, "aListener%s"%aAddress, aAddress, 213, ['sudoku_tecnique_used'])        
         
     def onRulesUsed(self, name, *args, **kargs):
-        #print "\nOn-Rules-Used: %s, "%repr(name)
         self.rules.append(name)
     
     def resetRules(self):
@@ -145,8 +139,6 @@ class SudokuDemoXMLRPC(wx.App):
         
         linkStream(self.server, self.token)
         
-        #self.engine = MyClipsEngine()
-        #self.interpreter = MyClipsInterpreter(self.engine)
         self.solvedCells = SudokuSolvedCells()
         self.solvedCells.install(self.server, self.token)
 
