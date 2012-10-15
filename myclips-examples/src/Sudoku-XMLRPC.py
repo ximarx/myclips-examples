@@ -37,6 +37,7 @@ from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 import wx
 import wx.xrc
+from encodings.base64_codec import base64_encode
 
 def aStream():
     
@@ -150,10 +151,21 @@ class SudokuDemoXMLRPC(wx.App):
             
         self.remoteInterpreter = remoteDo
         
-        self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/sudoku.clp")')
-        self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/solve.clp")')
-        self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/output-frills.clp")')
+        #self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/sudoku.clp")')
+        #self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/solve.clp")')
+        #self.remoteInterpreter('(server-load "C:/Users/Ximarx/git/myclips-examples/myclips-examples/res/sudoku/output-frills.clp")')
         #self.interpreter.evaluate('(watch rules)')
+        
+        def read_from_file(aPath, encode=True):
+            aFile = open(aPath, 'rU')
+            if encode:
+                return base64_encode(aFile.read())[0]
+            else:
+                return aFile.read()
+        
+        self.remoteInterpreter('(load "%s")'%read_from_file("../res/sudoku/sudoku.clp"))
+        self.remoteInterpreter('(load "%s")'%read_from_file("../res/sudoku/solve.clp"))
+        self.remoteInterpreter('(load "%s")'%read_from_file("../res/sudoku/output-frills.clp"))
         
         
         # Load the GUI from SudokuDemo.xrc
